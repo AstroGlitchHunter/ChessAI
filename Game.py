@@ -47,6 +47,8 @@ class Game(arcade.Window):
         self.no_capture_ticks = 0
 
         self.game_over = False
+        self.winner = None
+        self.reason = None
 
         self.white_pieces, self.black_pieces = get_start_pieces(self)
 
@@ -55,6 +57,9 @@ class Game(arcade.Window):
             self.pieces.append(i)
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if self.game_over:
+            return
+
         x_val = x // 100 * 100 + 50
         y_val = y // 100 * 100 + 50
 
@@ -98,22 +103,24 @@ class Game(arcade.Window):
 
                 result = check_game_status(pieces, pieces_op, side)
                 if result != 'Играем дальше':
-                    print(f'{result} белым!')
                     self.game_over = True
+                    self.winner = 'Black' if result == 'Мат' else 'Draw'
+                    self.reason = result
             else:
                 result = check_game_status(ai_pieces, ai_pieces_op, ai_side)
-                print(f'{result} чёрным!')
                 self.game_over = True
+                self.winner = 'White' if result == 'Мат' else 'Draw'
+                self.reason = result
 
 
 
             if self.no_capture_ticks >= 100:
-                print("Ничья по правилу 50 ходов!")
                 self.game_over = True
+                self.reason = 'Правило 50 ходов'
 
             if len(self.white_pieces) == 1 and len(self.black_pieces) == 1:
-                print("Ничья: на доске остались только Короли!")
                 self.game_over = True
+                self.reason = 'Остались только короли'
 
         else:
             if len(self.my_rects) != 0:
@@ -128,12 +135,27 @@ class Game(arcade.Window):
                     break
 
     def on_draw(self):
+
         self.clear()
         arcade.draw_texture_rect(self.bg, arcade.XYWH(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT))
         self.pieces.draw()
 
         for i in self.my_rects:
             arcade.draw_rect_filled(i, (27, 219, 24, 127))
+
+        if self.game_over:
+            arcade.draw_rect_filled(arcade.XYWH(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT), (0, 0, 0, 180))
+
+            if self.winner == 'White':
+                end_text = f'{self.reason}: Вы выиграли! 🏆'
+
+            elif self.winner == 'Black':
+                end_text = f'{self.reason}: ИИ выиграл! 🤖 '
+
+            else:
+                end_text = f'{self.reason}: Ничья! 🤝'
+
+            arcade.draw_text(end_text, WIDTH / 2, HEIGHT / 2, arcade.color.WHITE, font_size=36, bold=True, anchor_x='center', anchor_y='center')
 
     def on_update(self, delta_time: float) -> bool | None:
         pass
