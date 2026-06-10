@@ -25,16 +25,12 @@ def check_game_status(pieces, pieces_op, side):
     op_side = 'black' if side == 'white' else 'white'
     is_check = False
 
-
     for p in pieces_op.values():
         moves = p.get_possible_moves(pieces, pieces_op, op_side)
         if king_pos in moves:
             is_check = True
             break
 
-
     if is_check:
         return 'Мат'
     return 'Пат'
-
-
