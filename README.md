@@ -49,7 +49,7 @@ python Game.py
 
 ## Roadmap (What's Coming in v2.0)
 * Add the graphical End-Game pop-up menu (Checkmate / Stalemate / Draw graphics).
-* Adversarial Learning Framework: Implement a replay buffer to retrain the neural network on the player's personal blunders mid-game (1 - W_move).
+* Optimization of the structure.
 * Integrate a recursive Minimax search tree to allow the AI to calculate variants 2–3 moves ahead.
 
 ## License

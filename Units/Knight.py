@@ -10,8 +10,8 @@ class Knight(Sprite):
         self.center_y = center_y
 
     def can_move_to(self, x, y, pieces, pieces_op, side=None):
-        if any(v.center_x == x and v.center_y == y and v.__class__.__name__ == 'King' for v in
-               pieces_op.values()):
+        king = pieces_op.get('King')
+        if king.center_x == x and king.center_y == y:
             return False
         if abs(self.center_x - x) == 100 and abs(self.center_y - y) == 200 or abs(self.center_x - x) == 200 and abs(
                 self.center_y - y) == 100:

@@ -95,8 +95,16 @@ class Game(arcade.Window):
                     self.no_capture_ticks = 0
                 else:
                     self.no_capture_ticks += 1
+
+                result = check_game_status(pieces, pieces_op, side)
+                if result != 'Играем дальше':
+                    print(f'{result} белым!')
+                    self.game_over = True
             else:
-                print('Мат или пат!')
+                result = check_game_status(ai_pieces, ai_pieces_op, ai_side)
+                print(f'{result} чёрным!')
+                self.game_over = True
+
 
 
             if self.no_capture_ticks >= 100:
