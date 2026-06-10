@@ -96,7 +96,8 @@ class Game(arcade.Window):
                 else:
                     self.no_capture_ticks += 1
             else:
-                print('Мат или пат!')
+                print('Пат!')
+                self.game_over = True
 
 
             if self.no_capture_ticks >= 100:
