@@ -10,7 +10,8 @@ HEIGHT = 800
 TITLE = 'Chess'
 
 model = ChessNet()
-model.load_state_dict(torch.load('chess_net_weights.pth'))
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model.load_state_dict(torch.load('chess_net_weights.pth', map_location=device))
 
 def ai_move(pieces, pieces_op, side):
     ways_dict = {}
