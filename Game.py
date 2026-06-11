@@ -9,8 +9,9 @@ WIDTH = 800
 HEIGHT = 800
 TITLE = 'Chess'
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = ChessNet()
-model.load_state_dict(torch.load('chess_net_weights.pth'))
+model.load_state_dict(torch.load('chess_net_weights.pth', map_location=device))
 
 def ai_move(pieces, pieces_op, side):
     ways_dict = {}
@@ -41,7 +42,7 @@ class Game(arcade.Window):
         super().__init__(width, height, title)
 
         self.pieces = arcade.SpriteList()
-        self.bg = arcade.load_texture(r"Chess pieces images\ChessBoard.png")
+        self.bg = arcade.load_texture(r"Chess pieces images/ChessBoard.png")
 
         self.chosen = None
         self.no_capture_ticks = 0
